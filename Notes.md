@@ -1,0 +1,1580 @@
+# Java Notes
+
+## How to Study This Folder
+
+Read the topics in the order below. Each stage uses ideas from the previous
+stage, and each topic links to a note file and a Java file with examples.
+
+### Stage 1: Java Fundamentals
+
+Start here to learn the language structure, values, decisions, repetition,
+methods, and errors.
+
+1. [Java setup and first program](Basics/javaProgram.java)
+2. [Variables, types, operators, and input](Basics/basics.java)
+3. [Conditions and loops](Basics/loops.java)
+4. [Methods and the `static` keyword](Basics/basics.java)
+5. [Exception handling](Basics/exceptionHandling.java)
+6. Review the matching concepts in [Java Basics](#1-java-basics) through
+    [Exception Handling](#10-exception-handling) below.
+
+### Stage 2: Memory, Arrays, and Text
+
+Learn how Java stores values, groups fixed-size data, and works with text.
+
+1. [Stack and heap notes](StackAndHeap/StackAndHeapJava.md) and
+    [stack/heap example](StackAndHeap/StackAndHeapsInJava.java)
+2. [Array notes](Array/ArrayNotes.md) and [array examples](Array/Array.java)
+3. [String notes](String/StringNotes.md) and [string examples](String/String.java)
+
+### Stage 3: Object-Oriented Programming
+
+Move from individual methods to reusable designs with classes, objects,
+inheritance, encapsulation, and polymorphism.
+
+1. [OOP basics](oops/oopsNotes.md) and [basic OOP example](oops/demo.java)
+2. [Encapsulation](oops/encapsulation.java)
+3. [Inheritance](oops/inheritance.java)
+4. [Polymorphism](oops/polymorphism.java)
+5. [Abstract, inner, and anonymous classes](Basics/classesNotes.md) with
+    [examples](Basics/classes.java)
+6. [Interfaces and contracts](Basics/InterfaceNotes.md) with
+    [interface examples](Basics/Interfaces.java)
+
+### Stage 4: Collections and Data Processing
+
+Learn how to store groups of objects and process them clearly.
+
+1. [Collections notes](Collections/CollectionNotes.md) and
+    [collections example](Collections/collection.java)
+2. [Stream API notes](Collections/StreamApiNotes.md) and
+    [Stream API example](Collections/StreamApi.java)
+
+When revising Streams, remember the common pipeline order:
+
+```text
+source -> filter -> map -> sorted/grouped -> reduce/collect/forEach
+```
+
+### Stage 5: Concurrency
+
+Study this after understanding objects, collections, and memory, because
+threads share heap data and can expose race conditions.
+
+1. [Thread fundamentals and advanced concurrency](Basics/MultiThread.md)
+2. [Thread-pool example](Basics/multiThread.java)
+3. [Race-condition example](Basics/RaceCondition.java)
+
+### Revision Checklist
+
+- [ ] Write and run a class with `main`.
+- [ ] Explain primitive values versus object references.
+- [ ] Use conditions, loops, methods, and exception handling.
+- [ ] Explain stack frames, heap objects, and garbage collection.
+- [ ] Choose between an array, `ArrayList`, `Set`, `Map`, and `Queue`.
+- [ ] Explain class, object, constructor, encapsulation, inheritance, and polymorphism.
+- [ ] Choose an interface when code should depend on a contract.
+- [ ] Build a Stream pipeline using `filter`, `map`, `reduce`, and `collect`.
+- [ ] Explain why `forEach` is different from `map`.
+- [ ] Explain a race condition and choose a suitable concurrency tool.
+
+### How to Revise Each Topic
+
+For every note file, use this three-pass method:
+
+1. Read the explanation and vocabulary.
+2. Type the example yourself instead of only reading it.
+3. Change one value or rule, run the matching Java file, and explain the new output.
+
+The examples use small real-world situations such as orders, payments,
+students, and reports so that each Java feature has a reason to exist.
+
+## Table of Contents
+
+1. [Java Basics](#1-java-basics)
+2. [JDK, JRE, and JVM](#2-jdk-jre-and-jvm)
+3. [Variables, Data Types, and Literals](#3-variables-data-types-and-literals)
+4. [Type Conversion, Casting, and Parsing](#4-type-conversion-casting-and-parsing)
+5. [Operators and Conditional Statements](#5-operators-and-conditional-statements)
+6. [Loops](#6-loops)
+7. [Static Keyword and Methods](#7-static-keyword-and-methods)
+8. [Enhanced for Loop](#8-enhanced-for-loop)
+9. [Enums](#9-enums)
+10. [Exception Handling](#10-exception-handling)
+11. [Threads](#11-threads)
+
+---
+
+## 1. Java Basics
+
+Java is a high-level, object-oriented programming language. Java source code is compiled into bytecode, which can run on any system with a compatible Java Runtime Environment (JRE).
+
+### Main Features
+
+- Platform independent: Java bytecode runs on different operating systems through the JVM.
+- Object-oriented: Programs are organized around classes and objects.
+- Robust: Java provides strong type checking and automatic memory management.
+- Secure: Java runs bytecode inside a controlled runtime environment.
+- Multithreaded: Java supports multiple tasks at the same time.
+
+### How Java Works
+
+```text
+Java source code (.java)
+        |
+        | javac compiler
+        v
+Java bytecode (.class)
+        |
+        | JVM
+        v
+Machine code executed by the computer
+```
+
+```mermaid
+flowchart LR
+    A[Write Java code] --> B[javac compiles]
+    B --> C[Bytecode .class]
+    C --> D[JVM loads and runs]
+    D --> E[Program output]
+```
+
+Example:
+
+```java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}
+```
+
+Compile and run:
+
+```bash
+javac Hello.java
+java Hello
+```
+
+### Source Code, Compiler, and Bytecode
+
+1. Write Java source code in a .java file.
+2. The javac compiler checks the code and converts it into bytecode.
+3. Bytecode is stored in a .class file.
+4. The JVM loads and executes the bytecode.
+5. The JVM may use a JIT compiler to optimize frequently used bytecode.
+
+---
+
+## 2. JDK, JRE, and JVM
+
+### JVM: Java Virtual Machine
+
+The JVM is the engine that runs Java bytecode. It:
+
+- Loads .class files
+- Verifies bytecode
+- Executes bytecode
+- Manages memory
+- Performs garbage collection
+- Provides platform independence
+
+The JVM is platform-specific, but Java bytecode is platform-independent.
+
+### JRE: Java Runtime Environment
+
+The JRE provides everything needed to run Java programs:
+
+```text
+JRE = JVM + Java class libraries + supporting files
+```
+
+The JRE does not normally include development tools such as the Java compiler.
+
+### JDK: Java Development Kit
+
+The JDK provides everything needed to develop and run Java programs:
+
+```text
+JDK = JRE + development tools
+```
+
+Common JDK tools include:
+
+- javac: compiles Java source code
+- java: starts a Java application
+- javadoc: generates documentation
+- jar: creates and manages Java archive files
+
+### Relationship
+
+```text
+JDK
+└── JRE
+    └── JVM
+```
+
+---
+
+## 3. Variables, Data Types, and Literals
+
+Java is strongly typed. Every variable must have a type, and that type determines what values it can store.
+
+### Primitive Data Types
+
+| Type | Size | Range / Values | Example |
+| --- | ---: | --- | --- |
+| byte | 8 bits | -128 to 127 | byte age = 25; |
+| short | 16 bits | -32,768 to 32,767 | short count = 1000; |
+| int | 32 bits | -2^31 to 2^31 - 1 | int score = 95; |
+| long | 64 bits | -2^63 to 2^63 - 1 | long population = 8_000_000_000L; |
+| float | 32 bits | approx. 6-7 decimal digits | float price = 19.99F; |
+| double | 64 bits | approx. 15 decimal digits | double pi = 3.14159; |
+| char | 16 bits | a single UTF-16 character | char grade = 'A'; |
+| boolean | JVM-dependent | true or false | boolean passed = true; |
+
+Important notes:
+
+- Whole-number literals default to int.
+- Decimal literals default to double.
+- A long literal usually needs L.
+- A float literal needs F.
+- char uses single quotes, while String uses double quotes.
+
+### Reference Data Types
+
+Reference types store a reference to an object instead of the object value itself. Examples include:
+
+- Classes
+- Objects
+- Arrays
+- Interfaces
+- String
+- Enums
+
+```mermaid
+flowchart TB
+    A[Java Data Types] --> B[Primitive Types]
+    A --> C[Reference Types]
+    B --> D[byte, short, int, long]
+    B --> E[float, double]
+    B --> F[char, boolean]
+    C --> G[String]
+    C --> H[Array]
+    C --> I[Class/Object]
+    C --> J[Interface]
+```
+
+```java
+String name = "Alex";
+int[] numbers = {10, 20, 30};
+```
+
+A reference may also be null, which means it does not refer to an object:
+
+```java
+String message = null;
+```
+
+### Literals
+
+#### Integer Literals
+
+```java
+int decimal = 100;
+int binary = 0b1100100;
+int octal = 0144;
+int hexadecimal = 0x64;
+long largeNumber = 10000000000L;
+int readableNumber = 1_000_000;
+```
+
+Underscores improve readability and do not change the value.
+
+#### Floating-Point Literals
+
+```java
+double decimal = 12.5;
+double scientific = 1.25e3;
+float preciseEnough = 12.5F;
+```
+
+#### Character Literals
+
+```java
+char letter = 'J';
+char newline = '\n';
+char unicode = '\u0041';
+```
+
+#### String Literals
+
+```java
+String language = "Java";
+String text = "A line\nAnother line";
+```
+
+String is a reference type, even though string literals are written directly in the source code.
+
+#### Boolean Literals
+
+```java
+boolean isJavaFun = true;
+boolean isFinished = false;
+```
+
+#### null Literal
+
+```java
+String value = null;
+// int number = null; // Error
+```
+
+null represents the absence of an object reference and can be assigned only to reference types.
+
+---
+
+## 4. Type Conversion, Casting, and Parsing
+
+### Widening Conversion
+
+Widening conversion changes a smaller compatible type into a larger type. It is usually automatic because it does not typically lose information.
+
+```java
+int number = 50;
+long largerNumber = number;
+double decimalNumber = largerNumber;
+```
+
+Common order:
+
+```text
+byte -> short -> int -> long -> float -> double
+```
+
+char can also be widened to int, long, float, or double.
+
+### Narrowing Conversion
+
+Narrowing conversion changes a larger type into a smaller type. It must be written explicitly because data may be lost.
+
+```java
+double price = 19.99;
+int wholePrice = (int) price; // 19
+```
+
+This removes the decimal part without rounding.
+
+```java
+int largeValue = 130;
+byte smallValue = (byte) largeValue; // -126 due to overflow
+```
+
+Narrowing may produce overflow or loss of precision.
+
+### Conversion During Expressions
+
+Java applies numeric promotion when performing arithmetic:
+
+```java
+byte first = 10;
+byte second = 20;
+// byte result = first + second; // Error: result is promoted to int
+int result = first + second;
+```
+
+When arithmetic uses byte, short, or char, Java promotes the values to int first.
+
+### Casting
+
+Casting tells Java to treat a value as another compatible type.
+
+#### Primitive Casting
+
+```java
+double temperature = 36.6;
+int roundedDown = (int) temperature;
+```
+
+Syntax:
+
+```java
+targetType variable = (targetType) value;
+```
+
+#### Reference Casting
+
+```java
+class Animal {
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Woof");
+    }
+}
+
+Animal animal = new Dog(); // Upcasting: automatic
+Dog dog = (Dog) animal;    // Downcasting: explicit
+dog.bark();
+```
+
+- Upcasting: a child object is treated as a parent type and is usually automatic.
+- Downcasting: a parent reference is converted to a child type and must be explicit.
+
+Use instanceof before downcasting when the actual object type is uncertain:
+
+```java
+if (animal instanceof Dog) {
+    Dog dog = (Dog) animal;
+    dog.bark();
+}
+```
+
+### Upcasting and Downcasting
+
+Upcasting and downcasting are special forms of reference casting used with inheritance.
+
+#### Upcasting
+
+Upcasting means converting a subclass object to its superclass type. It is safe and usually happens automatically.
+
+```java
+class Animal {
+    void sound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Dog barks");
+    }
+}
+
+Animal animal = new Dog(); // Upcasting
+animal.sound();
+```
+
+Key points:
+
+- A Dog object can be treated as an Animal.
+- Upcasting is automatic and does not require a cast operator.
+- You can access only methods and variables declared in the parent type.
+
+#### Downcasting
+
+Downcasting means converting a superclass reference back to a subclass type. This is not always safe, so Java requires an explicit cast.
+
+```java
+Animal animal = new Dog();
+Dog dog = (Dog) animal; // Downcasting
+
+dog.bark();
+dog.sound();
+```
+
+Key points:
+
+- Downcasting is explicit and may throw ClassCastException if the object is not actually of that subclass.
+- Use instanceof before downcasting when the object type is uncertain.
+
+```java
+Animal animal = new Dog();
+
+if (animal instanceof Dog) {
+    Dog dog = (Dog) animal;
+    dog.bark();
+}
+```
+
+#### Summary
+
+- Upcasting: subclass -> superclass, safe, automatic
+- Downcasting: superclass -> subclass, unsafe, explicit cast
+- Always check the actual object type before downcasting
+
+### Conversion vs Casting vs Parsing
+
+| Concept | Meaning | Example |
+| --- | --- | --- |
+| Conversion | Changes one type to another, often automatically | long value = intValue; |
+| Casting | Explicitly requests a type change | int value = (int) doubleValue; |
+| Parsing | Converts text into a value | int value = Integer.parseInt("42"); |
+
+```java
+String text = "42";
+int number = Integer.parseInt(text);
+double decimal = Double.parseDouble("3.14");
+String result = String.valueOf(number);
+```
+
+---
+
+## 5. Operators and Conditional Statements
+
+### Relational Operators
+
+Relational operators compare two values and return a boolean result.
+
+| Operator | Meaning | Example |
+| --- | --- | --- |
+| == | Equal to | age == 18 |
+| != | Not equal to | age != 18 |
+| > | Greater than | marks > 50 |
+| < | Less than | marks < 50 |
+| >= | Greater than or equal to | age >= 18 |
+| <= | Less than or equal to | age <= 60 |
+
+```java
+int age = 20;
+System.out.println(age >= 18); // true
+System.out.println(age == 16); // false
+```
+
+### Logical Operators
+
+| Operator | Meaning | Example |
+| --- | --- | --- |
+| && | Logical AND | age >= 18 && hasId |
+| || | Logical OR | age < 13 || age > 65 |
+| ! | Logical NOT | !isClosed |
+
+```java
+int age = 20;
+boolean hasId = true;
+
+if (age >= 18 && hasId) {
+    System.out.println("Allowed to enter.");
+}
+```
+
+```java
+boolean isWeekend = true;
+boolean isHoliday = false;
+
+if (isWeekend || isHoliday) {
+    System.out.println("The office is closed.");
+}
+```
+
+Java uses short-circuit evaluation:
+
+- With &&, the second condition is only checked if the first is true.
+- With ||, the second condition is only checked if the first is false.
+
+### if Statement
+
+```java
+int marks = 75;
+
+if (marks >= 40) {
+    System.out.println("Passed");
+} else {
+    System.out.println("Failed");
+}
+```
+
+```mermaid
+flowchart TD
+    A[Start] --> B{marks >= 40?}
+    B -- Yes --> C[Print "Passed"]
+    B -- No --> D[Print "Failed"]
+    C --> E[End]
+    D --> E
+```
+
+Multiple conditions can be handled with else if:
+
+```java
+if (marks >= 80) {
+    System.out.println("Grade A");
+} else if (marks >= 60) {
+    System.out.println("Grade B");
+} else {
+    System.out.println("Needs improvement");
+}
+```
+
+### Nested if
+
+```java
+int marks = 85;
+
+if (marks >= 40) {
+    if (marks >= 80) {
+        System.out.println("Passed with distinction");
+    } else {
+        System.out.println("Passed");
+    }
+} else {
+    System.out.println("Failed");
+}
+```
+
+### switch Statement
+
+```java
+int day = 2;
+
+switch (day) {
+    case 1:
+        System.out.println("Monday");
+        break;
+    case 2:
+        System.out.println("Tuesday");
+        break;
+    default:
+        System.out.println("Another day");
+}
+```
+
+### Ternary Operator
+
+```java
+condition ? valueIfTrue : valueIfFalse;
+```
+
+Example:
+
+```java
+int marks = 75;
+String result = marks >= 40 ? "Pass" : "Fail";
+System.out.println(result);
+```
+
+Use ternary for short expressions; use if-else when the logic is longer or more complex.
+
+---
+
+## 6. Loops
+
+A loop repeats a block of code while a condition is true.
+
+### for Loop
+
+Use a for loop when you know the start value, stopping condition, and update step.
+
+```java
+for (int number = 1; number <= 5; number++) {
+    System.out.println(number);
+}
+```
+
+### while Loop
+
+Use a while loop when the number of repetitions is not known in advance.
+
+```java
+int number = 1;
+while (number <= 5) {
+    System.out.println(number);
+    number++;
+}
+```
+
+The loop variable must be updated inside the loop when it controls the condition.
+
+### do-while Loop
+
+Use a do-while loop when the body must run at least once.
+
+```java
+int choice;
+do {
+    System.out.println("Show the menu");
+    choice = 0;
+} while (choice != 0);
+```
+
+### Loop Control Statements
+
+- break exits the loop immediately.
+- continue skips the rest of the current iteration and continues with the next one.
+
+### Choosing a Loop
+
+| Loop | Condition checked | Best used when |
+| --- | --- | --- |
+| for | Before each repetition | The number of repetitions is known |
+| while | Before each repetition | The loop may run zero or more times |
+| do-while | After each repetition | The loop must run at least once |
+
+```mermaid
+flowchart TD
+    A[Need repetition?] --> B{How many times?}
+    B -- Known --> C[Use for loop]
+    B -- Unknown / may vary --> D{Should run at least once?}
+    D -- Yes --> E[Use do-while loop]
+    D -- No --> F[Use while loop]
+```
+
+---
+
+## 7. Static Keyword and Methods
+
+The static keyword means a member belongs to the class itself rather than to an individual object.
+
+### Static Variables
+
+```java
+class Student {
+    static int studentCount = 0;
+
+    Student() {
+        studentCount++;
+    }
+}
+
+Student first = new Student();
+Student second = new Student();
+
+System.out.println(Student.studentCount); // 2
+```
+
+A static variable is shared across all objects of the class.
+
+### Static Constants
+
+```java
+class MathValues {
+    static final double PI = 3.14159;
+    static final int DAYS_IN_WEEK = 7;
+}
+
+System.out.println(MathValues.PI);
+```
+
+final prevents reassignment after initialization.
+
+### Static Methods
+
+```java
+class Calculator {
+    static int add(int first, int second) {
+        return first + second;
+    }
+}
+
+int total = Calculator.add(10, 20);
+System.out.println(total); // 30
+```
+
+Static methods can access static data directly, but not instance data without an object reference.
+
+```java
+class Example {
+    int instanceNumber = 10;
+    static int sharedNumber = 20;
+
+    static void showValues() {
+        System.out.println(sharedNumber); // valid
+        // System.out.println(instanceNumber); // Error
+    }
+}
+```
+
+### Non-Static Methods
+
+A non-static method is also called an instance method and works with a specific object.
+
+```java
+class Counter {
+    static int totalCounters = 0;
+    int value = 0;
+
+    static void showTotalCounters() {
+        System.out.println(totalCounters);
+    }
+
+    void increaseValue() {
+        value++;
+    }
+}
+```
+
+### void Methods
+
+void means the method does not return a value.
+
+```java
+class Printer {
+    void printMessage() {
+        System.out.println("Hello");
+    }
+}
+```
+
+A void method may use return; to exit early, but it cannot return a value.
+
+### main Method
+
+```java
+public class Greeting {
+    public static void main(String[] args) {
+        if (args.length > 0) {
+            System.out.println("Hello, " + args[0]);
+        } else {
+            System.out.println("Hello, Java");
+        }
+    }
+}
+```
+
+The JVM starts a Java application by calling the main method.
+
+### Static Blocks
+
+```java
+class Configuration {
+    static String environment;
+
+    static {
+        environment = "development";
+    }
+}
+```
+
+A static block runs once when the class is loaded.
+
+### Static Nested Classes
+
+```java
+class Outer {
+    static class Helper {
+        static void show() {
+            System.out.println("Helper method");
+        }
+    }
+}
+
+Outer.Helper.show();
+```
+
+### Static vs Instance Members
+
+| Member | Belongs to | Accessed with | Copies |
+| --- | --- | --- | --- |
+| Static variable | Class | ClassName.variable | One shared copy |
+| Static method | Class | ClassName.method() | One class-level method |
+| Instance variable | Object | object.variable | One copy per object |
+| Instance method | Object | object.method() | Uses an object's state |
+
+```mermaid
+flowchart TD
+    A[Class Members] --> B{Need one shared value for all objects?}
+    B -- Yes --> C[Use static]
+    B -- No --> D[Use instance]
+    C --> E[Static variable / method]
+    D --> F[Instance variable / method]
+```
+
+---
+
+## 8. Enhanced for Loop
+
+The enhanced for loop, also called the for-each loop, visits each element of an array or collection in order.
+
+### Syntax
+
+```java
+for (Type variable : arrayOrCollection) {
+    // use variable
+}
+```
+
+```mermaid
+flowchart LR
+    A[Start] --> B[Take first element]
+    B --> C{More elements?}
+    C -- Yes --> D[Process current element]
+    D --> B
+    C -- No --> E[Stop]
+```
+
+Example:
+
+```java
+int[] numbers = {10, 20, 30, 40};
+
+for (int number : numbers) {
+    System.out.println(number);
+}
+```
+
+Output:
+
+```text
+10
+20
+30
+40
+```
+
+### When to Use It
+
+Use the enhanced for loop when:
+
+- Every element should be visited
+- The index is not needed
+- The array or collection should be read clearly and simply
+
+Example with strings:
+
+```java
+String[] names = {"Ana", "Ben", "Chris"};
+
+for (String name : names) {
+    System.out.println("Hello, " + name);
+}
+```
+
+### Compared with Traditional for Loop
+
+Use a regular for loop when the index is needed:
+
+```java
+int[] numbers = {10, 20, 30};
+
+for (int index = 0; index < numbers.length; index++) {
+    System.out.println("Index " + index + ": " + numbers[index]);
+}
+```
+
+The enhanced version is shorter, but it does not provide the array index directly.
+
+### Updating Elements
+
+Changing the loop variable does not update the original array value:
+
+```java
+int[] numbers = {1, 2, 3};
+
+for (int number : numbers) {
+    number *= 2;
+}
+
+// numbers is still {1, 2, 3}
+```
+
+To update actual array elements, use indexes:
+
+```java
+for (int index = 0; index < numbers.length; index++) {
+    numbers[index] *= 2;
+}
+```
+
+---
+
+## 9. Enums
+
+An enum, short for enumeration, is a special type that represents a fixed set of named constants. Enums are useful when a variable should have one value from a known list.
+
+### Declaring an Enum
+
+```java
+enum Day {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
+}
+```
+
+Enum constants are accessed through the enum type:
+
+```java
+Day today = Day.MONDAY;
+
+System.out.println(today); // MONDAY
+```
+
+Enum constants are objects, not strings. The type of `today` is `Day`, so assigning an arbitrary string is not allowed:
+
+```java
+// Day today = "MONDAY"; // Error
+```
+
+### Enum in a switch Statement
+
+Enums work well with `switch` statements:
+
+```java
+Day day = Day.SATURDAY;
+
+switch (day) {
+    case SATURDAY:
+    case SUNDAY:
+        System.out.println("Weekend");
+        break;
+    default:
+        System.out.println("Weekday");
+}
+```
+
+The `case` labels use the enum constants directly; the enum type name is not repeated.
+
+### Enum Methods
+
+Every enum provides useful methods such as `values()`, `valueOf()`, `name()`, and `ordinal()`:
+
+```java
+for (Day day : Day.values()) {
+    System.out.println(day.name() + " - position " + day.ordinal());
+}
+
+Day selected = Day.valueOf("FRIDAY");
+System.out.println(selected); // FRIDAY
+```
+
+- `values()` returns an array containing all constants in declaration order.
+- `valueOf(String)` returns the constant with the matching name.
+- `name()` returns the exact constant name as a string.
+- `ordinal()` returns the zero-based declaration position.
+
+`valueOf()` throws `IllegalArgumentException` when the name does not match an enum constant. `ordinal()` should not be used as a permanent database or external identifier because changing the declaration order changes the value.
+
+### Enum with Fields, Constructor, and Methods
+
+An enum can contain fields, a constructor, and methods:
+
+```java
+enum Size {
+    SMALL("S"),
+    MEDIUM("M"),
+    LARGE("L");
+
+    private final String code;
+
+    Size(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+}
+
+System.out.println(Size.MEDIUM.getCode()); // M
+```
+
+Enum constructors are implicitly private. Enum constants are created by Java, so code cannot use `new Size(...)`.
+
+### Comparing Enum Values
+
+Use `==` or `!=` to compare enum constants:
+
+```java
+Day day = Day.MONDAY;
+
+if (day == Day.MONDAY) {
+    System.out.println("The week has started.");
+}
+```
+
+Enum constants are single, predefined objects, so identity comparison with `==` is safe and clear. Avoid comparing them as strings.
+
+### Enum Collections
+
+`EnumSet` and `EnumMap` are specialized collections for enum values:
+
+```java
+import java.util.EnumSet;
+
+EnumSet<Day> weekend = EnumSet.of(Day.SATURDAY, Day.SUNDAY);
+System.out.println(weekend.contains(Day.SUNDAY)); // true
+```
+
+Use an enum when the possible values are fixed and known at compile time. Use a class or another data structure when values need to be created or changed dynamically.
+
+---
+
+## 10. Exception Handling
+
+An exception is an event that interrupts the normal flow of a program. In Java, exceptions are used to handle errors gracefully without crashing the application.
+
+### Why Exception Handling Is Important
+
+Without exception handling, a runtime problem such as invalid input, missing files, or divide-by-zero errors could stop the program immediately.
+
+Exception handling helps us to:
+
+- prevent abrupt program termination
+- show user-friendly error messages
+- keep the application running when possible
+- handle unexpected situations safely
+
+### Exception Hierarchy
+
+Java exceptions are organized in a class hierarchy:
+
+```text
+Throwable
+├── Error
+│   └── serious JVM problems, usually not handled
+└── Exception
+    ├── checked exceptions
+    └── unchecked exceptions (RuntimeException)
+```
+
+Common examples:
+
+- `ArithmeticException`: divide by zero
+- `NullPointerException`: using a null reference
+- `ArrayIndexOutOfBoundsException`: invalid array index
+- `NumberFormatException`: invalid numeric conversion
+- `FileNotFoundException`: file does not exist
+
+### try, catch, and finally
+
+```java
+try {
+    // risky code
+} catch (ExceptionType e) {
+    // handle the exception
+} finally {
+    // runs no matter what
+}
+```
+
+- `try`: contains the code that may throw an exception
+- `catch`: handles the type of exception raised
+- `finally`: always executes, often for cleanup such as closing files or database connections
+
+### Real Example: ATM Withdrawal
+
+```java
+public class BankAccount {
+    private double balance;
+
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be greater than zero.");
+        }
+
+        if (amount > balance) {
+            throw new IllegalStateException("Insufficient balance in the account.");
+        }
+
+        balance -= amount;
+        System.out.println("Withdrawal successful. Remaining balance: " + balance);
+    }
+
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000.0);
+
+        try {
+            String input = "2500";
+            double amount = Double.parseDouble(input);
+            account.withdraw(amount);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid amount entered. Please type a number.");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println("Transaction failed: " + e.getMessage());
+        } finally {
+            System.out.println("Transaction attempt finished.");
+        }
+    }
+}
+```
+
+Output:
+
+```text
+Transaction failed: Insufficient balance in the account.
+Transaction attempt finished.
+```
+
+This example shows a real scenario: the program tries to withdraw money, handles invalid numeric input, prevents negative or impossible amounts, and always prints a final message even if the transaction fails.
+
+### throw and throws
+
+#### throw
+
+The `throw` keyword is used inside a method or block to create and send one
+specific exception intentionally.
+
+### Syntax
+
+```java
+throw new ExceptionType("Useful error message");
+```
+
+When Java reaches a `throw` statement:
+
+1. It stops executing the current block.
+2. It looks for a matching `catch` block.
+3. If a matching `catch` block is found, that block handles the exception.
+4. Otherwise, the exception is passed to the calling method.
+5. If nobody handles it, the program terminates and prints a stack trace.
+
+### Example: Validating an Age
+
+```java
+static void registerUser(int age) {
+    if (age < 18) {
+        throw new IllegalArgumentException("User must be at least 18 years old.");
+    }
+
+    System.out.println("User registered successfully.");
+}
+
+public static void main(String[] args) {
+    try {
+        registerUser(16);
+    } catch (IllegalArgumentException e) {
+        System.out.println("Registration failed: " + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+Registration failed: User must be at least 18 years old.
+```
+
+The method uses `throw` because an age below 18 is invalid for the business
+rule. The `try-catch` in `main` prevents the application from ending abruptly.
+
+### `throw` with Different Exception Types
+
+```java
+int numerator = 10;
+int denominator = 0;
+
+if (denominator == 0) {
+    throw new ArithmeticException("Denominator cannot be zero.");
+}
+
+int result = numerator / denominator;
+```
+
+`throw` can be used with built-in exceptions such as `IllegalArgumentException`,
+`IllegalStateException`, and `ArithmeticException`, or with a custom exception.
+
+### `throw` vs `throws`
+
+| Keyword | Purpose | Location | Example |
+| --- | --- | --- | --- |
+| `throw` | Actually sends one exception | Inside a method or block | `throw new IllegalArgumentException();` |
+| `throws` | Declares possible exceptions | In a method signature | `void read() throws IOException` |
+
+`throw` is used to perform the action. `throws` informs the caller that the
+method may pass an exception to it.
+
+#### throws
+
+Use `throws` in a method signature when the method may pass an exception to the caller.
+
+```java
+public void readFile() throws IOException {
+    // code that may throw IOException
+}
+```
+
+### Exception Ducking
+
+Exception ducking means that a method does not handle a checked exception
+itself. Instead, it declares the exception with `throws` and passes the
+responsibility to its caller. The caller can handle the exception or duck it
+again by declaring `throws` too.
+
+```java
+static void validateAge(int age) throws InvalidAgeException {
+    if (age < 18) {
+        throw new InvalidAgeException("Age must be at least 18.");
+    }
+}
+
+static void createAccount(int age) throws InvalidAgeException {
+    validateAge(age); // Ducking: passes the exception to main().
+    System.out.println("Account created successfully.");
+}
+
+public static void main(String[] args) {
+    try {
+        createAccount(16);
+    } catch (InvalidAgeException e) {
+        System.out.println("Account creation failed: " + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+Account creation failed: Age must be at least 18.
+```
+
+Here, `validateAge()` throws the exception. `createAccount()` does not catch
+it, so it ducks the exception by declaring `throws InvalidAgeException`.
+Finally, `main()` handles it with `try-catch`. Exception ducking is useful when
+the current method cannot make the best decision about how to recover.
+
+### Custom Exceptions
+
+A custom exception is a user-defined exception created for a specific
+application rule. It makes error messages more meaningful than using a
+general-purpose exception.
+
+#### Creating and Using a Custom Exception
+
+```java
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+
+static void registerUser(int age) throws InvalidAgeException {
+    if (age < 18) {
+        throw new InvalidAgeException("Age must be at least 18 to register.");
+    }
+
+    System.out.println("User registered successfully.");
+}
+
+public static void main(String[] args) {
+    try {
+        registerUser(16);
+    } catch (InvalidAgeException e) {
+        System.out.println("Registration failed: " + e.getMessage());
+    }
+}
+```
+
+Output:
+
+```text
+Registration failed: Age must be at least 18 to register.
+```
+
+In this example:
+
+- `InvalidAgeException` is a custom checked exception because it extends `Exception`.
+- `registerUser()` declares `throws InvalidAgeException`.
+- `throw new InvalidAgeException(...)` creates and sends the exception.
+- The `catch` block handles the custom exception.
+
+If the exception should not require callers to catch or declare it, extend
+`RuntimeException` instead:
+
+```java
+class InvalidAgeException extends RuntimeException {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+```
+
+### Best Practices
+
+- Catch the most specific exception first.
+- Do not swallow exceptions without handling them.
+- Log or print a useful message.
+- Use `finally` to release resources.
+- Avoid using empty catch blocks.
+
+### Summary
+
+Exception handling is an important part of Java programming. It helps your program recover from errors, provide meaningful feedback, and continue running safely. In real applications, errors can happen due to bad user input, missing files, invalid network responses, or unexpected runtime states, so your code should always be prepared for them.
+
+---
+
+## 11. Threads
+
+A thread is a lightweight unit of execution inside a program. A Java
+application starts with one thread called the **main thread**. A program can
+create additional threads so that multiple tasks can run concurrently.
+
+For example, one thread can download a file while another thread updates the
+user interface. Threads are useful for background work, servers, games, and
+applications that need to remain responsive.
+
+### Process vs Thread
+
+- A **process** is a running program with its own memory.
+- A **thread** is a smaller execution path inside a process.
+- Threads in the same process share memory, so communication is fast.
+- Shared memory must be used carefully because multiple threads can change it
+  at the same time.
+
+### Creating a Thread with `Runnable`
+
+The recommended approach is usually to implement `Runnable`, because the
+class can still extend another class if necessary.
+
+```java
+class DownloadTask implements Runnable {
+    @Override
+    public void run() {
+        for (int file = 1; file <= 3; file++) {
+            System.out.println("Downloading file " + file);
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Download was interrupted.");
+                return;
+            }
+        }
+    }
+}
+
+public class ThreadExample {
+    public static void main(String[] args) throws InterruptedException {
+        Thread downloadThread = new Thread(new DownloadTask());
+        downloadThread.start();
+
+        System.out.println("Main thread continues working.");
+        downloadThread.join();
+        System.out.println("Download completed.");
+    }
+}
+```
+
+Important points:
+
+- `run()` contains the task that the thread performs.
+- `start()` creates a new thread and then calls `run()` on that thread.
+- Calling `run()` directly does not create a new thread; it runs like a normal
+  method on the current thread.
+- `sleep()` pauses the current thread for a specified time.
+- `join()` makes the current thread wait until another thread finishes.
+
+### Creating a Thread by Extending `Thread`
+
+```java
+class GreetingThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Hello from a separate thread.");
+    }
+}
+
+GreetingThread thread = new GreetingThread();
+thread.start();
+```
+
+Implementing `Runnable` is generally more flexible than extending `Thread`.
+
+### Thread Lifecycle
+
+A thread commonly moves through these states:
+
+```text
+NEW -> RUNNABLE -> RUNNING -> BLOCKED / WAITING / TIMED_WAITING -> TERMINATED
+```
+
+- `NEW`: the thread object exists, but `start()` has not been called.
+- `RUNNABLE`: ready to run or currently running, depending on the scheduler.
+- `BLOCKED`: waiting to acquire a lock.
+- `WAITING`: waiting indefinitely for another thread or event.
+- `TIMED_WAITING`: waiting for a limited time, such as during `sleep()`.
+- `TERMINATED`: the `run()` method has finished.
+
+### Race Conditions and `synchronized`
+
+A race condition occurs when multiple threads access shared data and the final
+result depends on the order in which the threads run.
+
+Use `synchronized` to allow only one thread at a time to execute a critical
+section:
+
+```java
+class Counter {
+    private int value;
+
+    public synchronized void increment() {
+        value++;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
+public class CounterExample {
+    public static void main(String[] args) throws InterruptedException {
+        Counter counter = new Counter();
+
+        Thread first = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        Thread second = new Thread(() -> {
+            for (int i = 0; i < 1000; i++) {
+                counter.increment();
+            }
+        });
+
+        first.start();
+        second.start();
+        first.join();
+        second.join();
+
+        System.out.println(counter.getValue()); // 2000
+    }
+}
+```
+
+Without `synchronized`, both threads could read the same old value and
+overwrite each other's updates. This would produce a value less than `2000`.
+
+### Interrupting a Thread
+
+`interrupt()` requests that a thread stop what it is doing. It does not force
+the thread to stop immediately. The thread should respond to the interruption
+and clean up safely.
+
+```java
+Thread worker = new Thread(() -> {
+    try {
+        Thread.sleep(5000);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        System.out.println("Worker stopped safely.");
+    }
+});
+
+worker.start();
+worker.interrupt();
+```
+
+### Thread Safety Best Practices
+
+- Prefer local variables because they are not shared between threads.
+- Protect shared mutable data with synchronization or thread-safe classes.
+- Use `start()`, not a direct call to `run()`, when creating a new thread.
+- Restore the interrupt status after catching `InterruptedException` unless the
+  interruption is fully handled.
+- Prefer `ExecutorService` for managing many tasks instead of manually
+  creating a large number of threads.
+
+---
+
+## Final Quick Revision
+
+- Java is platform-independent because bytecode runs on the JVM.
+- JDK includes development tools, JRE includes the runtime environment, and JVM executes bytecode.
+- Primitive types store simple values; reference types store references to objects.
+- Widening conversion is automatic, while narrowing needs explicit casting.
+- Operators help compare and decide logic.
+- Loops reduce repetitive code.
+- Static members belong to the class; instance members belong to each object.
+- The main method is the entry point of a Java application.
+- Enhanced for loops are best for reading through arrays and collections.
+- Enums represent a fixed set of named constants and provide type-safe values.
+- Threads allow multiple tasks to execute concurrently within a Java process.
